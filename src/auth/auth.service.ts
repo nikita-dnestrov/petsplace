@@ -24,6 +24,7 @@ export class AuthService {
   }
 
   async login(data: LoginDto) {
+    console.log('data', data);
     const user = await this.userModel.findOne({ email: data.email });
     console.log(user);
     const compare = await bcrypt.compare(data.password, user.password);
