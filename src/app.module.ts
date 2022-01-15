@@ -5,7 +5,9 @@ import { AuthModule } from './auth/auth.module';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 
-const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL =
+  process.env.MONGO_URL ||
+  'mongodb+srv://nikitadnestrov:10102000nik@cluster0.nh3xp.mongodb.net/petsplace';
 // 'mongodb+srv://nikitadnestrov:10102000nik@cluster0.nh3xp.mongodb.net/petsplace';
 
 console.log(MONGO_URL);
