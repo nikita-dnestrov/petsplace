@@ -29,11 +29,11 @@ export class AuthService {
     console.log(user);
     const compare = await bcrypt.compare(data.password, user.password);
     if (compare) {
-      const { email, username, _id, status, products } = user;
+      const { email, username, _id, status, products, avatar } = user;
       return {
         user,
         token: this.jwtService.sign(
-          JSON.stringify({ email, username, _id, status, products })
+          JSON.stringify({ email, username, _id, status, products, avatar })
         ),
       };
     } else {

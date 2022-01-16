@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Put,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '../auth/auth.guard';
 import { UserService } from './user.service';
 
@@ -31,6 +41,18 @@ export class UserController {
   updateUserBalanceByToken(@Req() req, @Body() body) {
     try {
       return this.userService.updateUserBalance(req.user._id, body.balance);
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+
+  @Put('/avatar')
+  @UseInterceptors(FileInterceptor('file'))
+  updateUserAvatarByToken(@Req() req, @UploadedFile() file) {
+    try {
+      // return Buffer.from(file.buffer);
+      return this.userService.updateUserAvatar(req.user._id, file);
     } catch (err) {
       console.log(err);
       return err;

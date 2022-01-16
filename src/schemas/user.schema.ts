@@ -24,6 +24,9 @@ export class User {
   @Prop({ required: false, default: 0, type: Number })
   balance: number;
 
+  @Prop({ require: false, default: '', type: String })
+  avatar: string;
+
   @Prop({
     required: false,
     type: String,
