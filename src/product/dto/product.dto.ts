@@ -3,7 +3,7 @@ import { EProductStatus } from 'src/schemas/product.schema';
 
 export class ProductDto {
   title: string;
-  seller: Types.ObjectId;
+  owner: Types.ObjectId;
   category: Types.ObjectId;
   price: number;
   status?: EProductStatus;

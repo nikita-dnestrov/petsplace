@@ -12,7 +12,7 @@ export enum EProductStatus {
 @Schema({ timestamps: true, collection: ESchemaNames.PRODUCTS })
 export class Product {
   @Prop({ required: true, type: Types.ObjectId, ref: ESchemaNames.USERS })
-  seller: Types.ObjectId;
+  owner: Types.ObjectId;
 
   @Prop({ required: true, type: String })
   title: string;

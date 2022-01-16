@@ -16,7 +16,7 @@ export class ProductService {
 
   async createProduct(data: ProductDto) {
     const savedProduct = await new this.product(data).save();
-    await this.user.findByIdAndUpdate(data.seller, {
+    await this.user.findByIdAndUpdate(data.owner, {
       $push: { products: savedProduct._id },
     });
     return await this.product.findById(savedProduct._id);
@@ -34,8 +34,8 @@ export class ProductService {
         {
           from: ESchemaNames.USERS,
           foreignField: '_id',
-          localField: 'seller',
-          as: 'seller',
+          localField: 'owner',
+          as: 'owner',
         },
       ])
     );
@@ -52,7 +52,7 @@ export class ProductService {
   async softDeleteProductById(id) {
     const found = await this.product.findById(id);
 
-    await this.user.findByIdAndUpdate(found.seller, {
+    await this.user.findByIdAndUpdate(found.owner, {
       $pull: { products: found._id },
     });
 

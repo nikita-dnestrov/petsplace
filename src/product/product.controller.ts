@@ -24,7 +24,7 @@ export class ProductController {
     try {
       return this.productService.createProduct({
         ...body,
-        seller: toObjectId(req.user._id),
+        owner: toObjectId(req.user._id),
         category: toObjectId(body.category),
       });
     } catch (err) {

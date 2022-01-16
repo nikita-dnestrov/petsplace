@@ -7,4 +7,5 @@ export class UserDto {
   email: string;
   password: string;
   products: Types.ObjectId[];
+  balance: Number;
 }

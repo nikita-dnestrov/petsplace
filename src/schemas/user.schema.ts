@@ -21,6 +21,9 @@ export class User {
   @Prop({ required: true, type: String })
   password: string;
 
+  @Prop({ required: false, default: 0, type: Number })
+  balance: number;
+
   @Prop({
     required: false,
     type: String,
