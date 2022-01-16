@@ -1,15 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import axios from 'axios';
 import { Model } from 'mongoose';
-import { EUserStatus, User } from 'src/schemas/user.schema';
+import { User } from 'src/schemas/user.schema';
 import { UserDto } from './dto/user.dto';
 const ImageKit = require('imagekit');
-var FormData = require('form-data');
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private user: Model<User>) {}
+
+  async findUser(id: string) {
+    return await this.user.findById(id);
+  }
 
   async updateUser(id: string, data: Partial<UserDto>) {
     return await this.user.findByIdAndUpdate(id, data);

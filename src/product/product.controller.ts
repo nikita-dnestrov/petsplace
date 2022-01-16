@@ -7,8 +7,11 @@ import {
   Post,
   Put,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { toObjectId } from 'src/helper/objectIdmapper';
 import { CreateProductDto, ProductDto } from './dto/product.dto';
@@ -27,6 +30,17 @@ export class ProductController {
         owner: toObjectId(req.user._id),
         category: toObjectId(body.category),
       });
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+
+  @Put('/:id/photo')
+  @UseInterceptors(FileInterceptor('file'))
+  updatePhoto(@UploadedFile() file, @Param('id') id) {
+    try {
+      return this.productService.updateProductPhoto(id, file);
     } catch (err) {
       console.log(err);
       return err;

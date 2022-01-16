@@ -6,6 +6,7 @@ import { ESchemaNames } from 'src/schemas';
 import { EProductStatus, Product } from 'src/schemas/product.schema';
 import { User } from 'src/schemas/user.schema';
 import { ProductDto } from './dto/product.dto';
+const ImageKit = require('imagekit');
 
 @Injectable()
 export class ProductService {
@@ -47,6 +48,21 @@ export class ProductService {
 
   async updateProductById(id, data) {
     return await this.product.findByIdAndUpdate(id, data);
+  }
+
+  async updateProductPhoto(id: string, file: any) {
+    const kit = new ImageKit({
+      publicKey: 'public_wUjnhpIQcdnCoNN7ZWSAspmkGvA=',
+      privateKey: 'private_R8ORWzyNCjDBJuie3N1fr05XFsQ=',
+      urlEndpoint: 'https://ik.imagekit.io/et5tweaufke',
+    });
+
+    const response = await kit.upload({
+      file: file.buffer.toString('base64'),
+      fileName: `product_${id}.jpg`,
+    });
+
+    return await this.product.findByIdAndUpdate(id, { photo: response.url }, { new: true });
   }
 
   async softDeleteProductById(id) {

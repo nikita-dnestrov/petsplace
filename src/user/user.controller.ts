@@ -20,7 +20,7 @@ export class UserController {
   @Get('/profile')
   getUserByToken(@Req() req) {
     try {
-      return req.user;
+      return this.userService.findUser(req.user._id);
     } catch (err) {
       console.log(err);
       return err;
@@ -51,7 +51,6 @@ export class UserController {
   @UseInterceptors(FileInterceptor('file'))
   updateUserAvatarByToken(@Req() req, @UploadedFile() file) {
     try {
-      // return Buffer.from(file.buffer);
       return this.userService.updateUserAvatar(req.user._id, file);
     } catch (err) {
       console.log(err);

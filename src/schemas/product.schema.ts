@@ -21,7 +21,10 @@ export class Product {
   category: Types.ObjectId;
 
   @Prop({ required: true, type: Number })
-  price: Number;
+  price: number;
+
+  @Prop({ required: true, type: String })
+  photo: string;
 
   @Prop({
     required: false,
