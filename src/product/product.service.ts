@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { aggregationPopulate } from 'src/helper/aggregationPopulate';
+import { toObjectId } from 'src/helper/objectIdmapper';
 import { ESchemaNames } from 'src/schemas';
 import { EProductStatus, Product } from 'src/schemas/product.schema';
 import { User } from 'src/schemas/user.schema';
@@ -63,6 +64,37 @@ export class ProductService {
     });
 
     return await this.product.findByIdAndUpdate(id, { photo: response.url }, { new: true });
+  }
+
+  async handleProductPurchase(productId: string, buyerId: string) {
+    const buyer = await this.user.findById(buyerId);
+    const found = await this.product.findById(productId);
+    const seller = await this.user.findById(found.owner);
+
+    if (buyer.balance < found.price) {
+      throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+    } else {
+      await this.user.findByIdAndUpdate(buyerId, {
+        balance: buyer.balance - found.price,
+        $push: { products: toObjectId(found._id) },
+      });
+
+      await this.user.findByIdAndUpdate(seller._id, {
+        balance: seller.balance + found.price,
+        $pull: { products: found._id },
+      });
+
+      const updated = await this.product.findByIdAndUpdate(
+        productId,
+        {
+          owner: toObjectId(buyerId),
+          $push: { ownerHistory: found.owner },
+        },
+        { new: true }
+      );
+
+      return updated;
+    }
   }
 
   async softDeleteProductById(id) {

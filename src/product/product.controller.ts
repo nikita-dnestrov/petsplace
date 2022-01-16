@@ -36,17 +36,6 @@ export class ProductController {
     }
   }
 
-  @Put('/:id/photo')
-  @UseInterceptors(FileInterceptor('file'))
-  updatePhoto(@UploadedFile() file, @Param('id') id) {
-    try {
-      return this.productService.updateProductPhoto(id, file);
-    } catch (err) {
-      console.log(err);
-      return err;
-    }
-  }
-
   @Get('/')
   getAll() {
     try {
@@ -61,6 +50,27 @@ export class ProductController {
   getById(@Param('id') id: string) {
     try {
       return this.productService.getProductById(id);
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+
+  @Put('/:id/purchase')
+  handlePurchase(@Param('id') id: string, @Req() req) {
+    try {
+      return this.productService.getProductById(id);
+    } catch (err) {
+      console.log(err);
+      return err;
+    }
+  }
+
+  @Put('/:id/photo')
+  @UseInterceptors(FileInterceptor('file'))
+  updatePhoto(@UploadedFile() file, @Param('id') id) {
+    try {
+      return this.productService.updateProductPhoto(id, file);
     } catch (err) {
       console.log(err);
       return err;

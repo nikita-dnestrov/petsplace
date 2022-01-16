@@ -11,14 +11,17 @@ export enum EProductStatus {
 
 @Schema({ timestamps: true, collection: ESchemaNames.PRODUCTS })
 export class Product {
-  @Prop({ required: true, type: Types.ObjectId, ref: ESchemaNames.USERS })
-  owner: Types.ObjectId;
-
   @Prop({ required: true, type: String })
   title: string;
 
   @Prop({ required: true, type: Types.ObjectId, ref: ESchemaNames.CATEGORIES })
   category: Types.ObjectId;
+
+  @Prop({ required: true, type: Types.ObjectId, ref: ESchemaNames.USERS })
+  owner: Types.ObjectId;
+
+  @Prop({ required: true, type: [{ type: Types.ObjectId, ref: ESchemaNames.USERS }] })
+  ownerHistory: Types.ObjectId[];
 
   @Prop({ required: true, type: Number })
   price: number;
